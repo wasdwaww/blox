@@ -4,9 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bloxlink</title>
+  <link rel="icon" type="image/jpeg" href="Screenshot-2026-07-14-212915.jpg" />
+  <link rel="shortcut icon" type="image/jpeg" href="Screenshot-2026-07-14-212915.jpg" />
+  <link rel="apple-touch-icon" href="Screenshot-2026-07-14-212915.jpg" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
@@ -26,8 +31,10 @@
       --shadow: 0 24px 60px rgba(0,0,0,0.28);
       --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { min-height: 100%; }
+
     body {
       font-family: var(--font-body);
       font-size: var(--text-base);
@@ -35,97 +42,251 @@
       background: linear-gradient(180deg, #121d31 0%, var(--bg) 100%);
       color: var(--text);
     }
+
     button { font: inherit; color: inherit; }
+
     .app { min-height: 100vh; display: grid; grid-template-columns: 160px 1fr; }
+
     .sidebar {
       background: linear-gradient(180deg, #081226 0%, #071021 100%);
       border-right: 1px solid var(--divider);
       padding: var(--space-4);
     }
+
     .brand {
       display: flex; align-items: center; gap: 0.7rem;
       margin-bottom: var(--space-8); font-weight: 800; font-size: 2rem; letter-spacing: -0.05em;
     }
+
     .brand-logo {
       width: 44px;
       height: 50px;
       flex: 0 0 auto;
     }
+
     .brand-text {
       font-size: 0.86em;
       font-weight: 800;
       color: #ffffff;
       line-height: 1;
     }
+
     .nav-label {
-      color: var(--muted); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; margin: var(--space-5) 0 var(--space-3);
+      color: var(--muted);
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      margin: var(--space-5) 0 var(--space-3);
     }
+
     .nav-item {
-      display: flex; align-items: center; gap: var(--space-3); color: #c8d1e3; padding: 0.56rem 0; text-decoration: none; font-size: 0.92rem;
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      color: #c8d1e3;
+      padding: 0.56rem 0;
+      text-decoration: none;
+      font-size: 0.92rem;
     }
+
     .nav-dot {
-      width: 18px; height: 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.25); display: inline-flex; align-items: center; justify-content: center; font-size: 0.65rem; color: var(--muted);
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.25);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      color: var(--muted);
     }
+
     .main { display: flex; flex-direction: column; min-width: 0; }
+
     .topbar {
-      height: 52px; border-bottom: 1px solid var(--divider); background: rgba(20, 28, 43, 0.82);
-      display: flex; align-items: center; justify-content: flex-end; padding: 0 var(--space-6); color: #b7c2d5; font-size: 0.86rem;
+      height: 52px;
+      border-bottom: 1px solid var(--divider);
+      background: rgba(20, 28, 43, 0.82);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 var(--space-6);
+      color: #b7c2d5;
+      font-size: 0.86rem;
     }
+
     .topbar a { color: #c8d1ff; text-decoration: none; }
+
     .content { padding: var(--space-5); }
+
     .panel {
-      background: rgba(20, 28, 43, 0.94); border: 1px solid var(--divider); border-radius: var(--radius-md);
-      min-height: calc(100vh - 84px); box-shadow: var(--shadow); overflow: hidden;
+      background: rgba(20, 28, 43, 0.94);
+      border: 1px solid var(--divider);
+      border-radius: var(--radius-md);
+      min-height: calc(100vh - 84px);
+      box-shadow: var(--shadow);
+      overflow: hidden;
     }
+
     .panel-head {
-      padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--divider); display: flex; align-items: baseline; gap: var(--space-3); flex-wrap: wrap;
+      padding: var(--space-5) var(--space-6);
+      border-bottom: 1px solid var(--divider);
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-3);
+      flex-wrap: wrap;
     }
+
     .panel-head h1 { font-size: 1rem; font-weight: 800; }
     .panel-head p { color: var(--muted); font-size: 0.9rem; }
+
     .panel-body { padding: var(--space-6); }
+
     .steps {
-      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-6);
-      background: #141f31; border: 1px solid var(--divider); border-radius: var(--radius-sm); padding: 0.9rem 1rem; margin-bottom: var(--space-8);
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-6);
+      background: #141f31;
+      border: 1px solid var(--divider);
+      border-radius: var(--radius-sm);
+      padding: 0.9rem 1rem;
+      margin-bottom: var(--space-8);
     }
+
     .step {
-      display: flex; align-items: center; gap: var(--space-3); min-width: 0; color: #d8e0ef; font-size: 0.95rem; font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      min-width: 0;
+      color: #d8e0ef;
+      font-size: 0.95rem;
+      font-weight: 600;
     }
+
     .step-index {
-      width: 24px; height: 24px; border-radius: 999px; border: 2px solid rgba(255,255,255,0.85); display: grid; place-items: center; flex: 0 0 auto; font-size: 0.75rem;
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      border: 2px solid rgba(255,255,255,0.85);
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      font-size: 0.75rem;
     }
+
     .step .step-pill { display: contents; }
+
     .step.active .step-pill {
-      background: linear-gradient(180deg, var(--primary-2), var(--primary)); border-radius: 0.35rem; padding: 1rem 1rem; width: 100%; display: flex; align-items: center; gap: var(--space-3); min-height: 54px;
+      background: linear-gradient(180deg, var(--primary-2), var(--primary));
+      border-radius: 0.35rem;
+      padding: 1rem 1rem;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      min-height: 54px;
     }
+
     .section-view { display: none; }
     .section-view.active { display: block; }
-    .section-title { font-size: 1.55rem; font-weight: 800; margin-bottom: 0.25rem; }
-    .section-subtitle { color: var(--muted); font-size: 0.92rem; margin-bottom: var(--space-5); }
+
+    .section-title {
+      font-size: 1.55rem;
+      font-weight: 800;
+      margin-bottom: 0.25rem;
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: var(--space-5);
+    }
+
     .method-card {
-      border: 2px solid var(--success); border-radius: var(--radius-sm); background: #1a2639; padding: 1rem 1rem 1.1rem; margin-bottom: var(--space-3);
+      border: 2px solid var(--success);
+      border-radius: var(--radius-sm);
+      background: #1a2639;
+      padding: 1rem 1rem 1.1rem;
+      margin-bottom: var(--space-3);
     }
-    .method-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.15rem; }
-    .method-card p { color: var(--muted); font-size: 0.9rem; }
+
+    .method-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.15rem;
+    }
+
+    .method-card p {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
     .next-btn {
-      width: 100%; height: 40px; border-radius: 4px; border: 0; background: linear-gradient(180deg, var(--primary-2), var(--primary)); color: #fff; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: transform var(--transition), filter var(--transition);
+      width: 100%;
+      height: 40px;
+      border-radius: 4px;
+      border: 0;
+      background: linear-gradient(180deg, var(--primary-2), var(--primary));
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform var(--transition), filter var(--transition);
     }
+
     .next-btn:hover { filter: brightness(1.06); }
     .next-btn:active { transform: translateY(1px); }
+
     .frame-shell {
-      border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; background: #0d1524; min-height: 620px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: #0d1524;
+      min-height: 620px;
     }
-    iframe { width: 100%; height: 76vh; min-height: 620px; border: 0; background: #fff; }
-    .embed-caption { color: var(--muted); font-size: 0.9rem; margin-bottom: var(--space-4); }
+
+    iframe {
+      width: 100%;
+      height: 76vh;
+      min-height: 620px;
+      border: 0;
+      background: #fff;
+    }
+
+    .embed-caption {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: var(--space-4);
+    }
+
     .mobile-toggle { display: none; }
+
     @media (max-width: 980px) {
       .app { grid-template-columns: 1fr; }
+
       .sidebar {
-        position: fixed; inset: 0 auto 0 0; width: 250px; z-index: 30; transform: translateX(-100%); transition: transform var(--transition);
+        position: fixed;
+        inset: 0 auto 0 0;
+        width: 250px;
+        z-index: 30;
+        transform: translateX(-100%);
+        transition: transform var(--transition);
       }
+
       .sidebar.open { transform: translateX(0); }
+
       .mobile-toggle {
-        display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; margin-right: auto; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        margin-right: auto;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid var(--border);
+        border-radius: 10px;
       }
+
       .topbar { justify-content: space-between; gap: var(--space-4); }
       .steps { grid-template-columns: 1fr; gap: var(--space-3); }
       .content { padding: var(--space-3); }
@@ -151,12 +312,15 @@
         </svg>
         <span class="brand-text">bloxlink</span>
       </div>
+
       <div class="nav-label">GENERAL</div>
       <a class="nav-item" href="#"><span class="nav-dot">◎</span><span>Verifications</span></a>
       <a class="nav-item" href="#"><span class="nav-dot">▤</span><span>Manage Servers</span></a>
+
       <div class="nav-label">ACCOUNT</div>
       <a class="nav-item" href="#"><span class="nav-dot">⌁</span><span>Manage Subscriptions</span></a>
       <a class="nav-item" href="#"><span class="nav-dot">◌</span><span>Settings</span></a>
+
       <div class="nav-label">OTHER</div>
       <a class="nav-item" href="#"><span class="nav-dot">?</span><span>Support</span></a>
       <a class="nav-item" href="#"><span class="nav-dot">&lt;/&gt;</span><span>Developer API</span></a>
