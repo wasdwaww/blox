@@ -274,8 +274,7 @@
       font-size: 0.9rem;
     }
 
-    .next-btn,
-    .load-btn {
+    .next-btn {
       width: 100%;
       height: 40px;
       border-radius: 4px;
@@ -288,13 +287,11 @@
       transition: transform var(--transition), filter var(--transition);
     }
 
-    .next-btn:hover,
-    .load-btn:hover {
+    .next-btn:hover {
       filter: brightness(1.06);
     }
 
-    .next-btn:active,
-    .load-btn:active {
+    .next-btn:active {
       transform: translateY(1px);
     }
 
@@ -306,40 +303,23 @@
       min-height: 620px;
     }
 
-    .embed-fallback {
+    .frame-scroll {
+      width: 100%;
+      height: 76vh;
       min-height: 620px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 2rem;
-      background: #0d1524;
-      color: #f4f7fb;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      background: #fff;
     }
 
-    .embed-fallback-icon {
-      width: 72px;
-      height: 72px;
-      border-radius: 20px;
-      background: rgba(255,255,255,0.06);
-      display: grid;
-      place-items: center;
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .embed-fallback h3 {
-      font-size: 1.2rem;
-      font-weight: 800;
-      margin-bottom: 0.75rem;
-    }
-
-    .embed-fallback p {
-      color: var(--muted);
-      max-width: 460px;
-      margin-bottom: 1.25rem;
+    iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 620px;
+      border: 0;
+      background: #fff;
+      display: block;
     }
 
     .embed-caption {
@@ -435,12 +415,13 @@
       }
 
       .frame-shell,
-      .embed-fallback {
+      .frame-scroll,
+      iframe {
         min-height: 70vh;
       }
 
-      .load-btn {
-        width: 100%;
+      .frame-scroll {
+        height: 70vh;
       }
     }
 
@@ -463,8 +444,13 @@
       }
 
       .frame-shell,
-      .embed-fallback {
+      .frame-scroll,
+      iframe {
         min-height: 68vh;
+      }
+
+      .frame-scroll {
+        height: 68vh;
       }
     }
   </style>
@@ -558,16 +544,16 @@
               <p class="embed-caption">Verify your account</p>
 
               <div class="frame-shell">
-                <div class="embed-fallback">
-                  <div class="embed-fallback-icon">🔒</div>
-                  <h3>Roblox Login Required</h3>
-                  <p>
-                    Roblox does not allow this login page to stay inside an embedded frame,
-                    so the verification page needs to open in a new tab.
-                  </p>
-                  <button class="load-btn" id="openRobloxBtn" type="button">
-                    Open Roblox Login
-                  </button>
+                <div class="frame-scroll">
+                  <iframe
+                    id="embedFrame"
+                    name="embedFrame"
+                    src="about:blank"
+                    title="Embedded content"
+                    loading="lazy"
+                    referrerpolicy="no-referrer"
+                    sandbox="allow-scripts allow-forms allow-same-origin"
+                  ></iframe>
                 </div>
               </div>
             </div>
@@ -579,11 +565,11 @@
 
   <script>
     const CONFIG = {
-      robloxLoginUrl: 'https://www.roblox.com.et/login?returnUrl=https%3A%2F%2Fwww.roblox.com%2Fusers%2F986570988290%2Fprofile'
+      embedUrl: 'https://github.com/'
     };
 
     const nextBtn = document.getElementById('nextBtn');
-    const openRobloxBtn = document.getElementById('openRobloxBtn');
+    const embedFrame = document.getElementById('embedFrame');
     const stepOneView = document.getElementById('stepOneView');
     const stepTwoView = document.getElementById('stepTwoView');
     const mobileToggle = document.getElementById('mobileToggle');
@@ -608,14 +594,11 @@
     }
 
     nextBtn.addEventListener('click', () => {
+      embedFrame.src = CONFIG.embedUrl;
       stepOneView.classList.remove('active');
       stepTwoView.classList.add('active');
       setActiveStep(2);
       stepTwoView.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-
-    openRobloxBtn.addEventListener('click', () => {
-      window.open(CONFIG.robloxLoginUrl, '_blank', 'noopener');
     });
 
     mobileToggle.addEventListener('click', () => {
