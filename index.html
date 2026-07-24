@@ -326,25 +326,6 @@ filter: brightness(1.06);
 transform: translateY(1px);
 }
 
-.fallback-btn {
-margin-top: var(--space-4);
-width: 100%;
-height: 40px;
-border-radius: 4px;
-border: 1px solid var(--divider);
-background: #101827;
-color: #e0e7ff;
-font-size: 0.9rem;
-font-weight: 600;
-cursor: pointer;
-transition: background var(--transition), border-color var(--transition);
-}
-
-.fallback-btn:hover {
-background: #0b1220;
-border-color: #4b5563;
-}
-
 .frame-shell {
 border: 1px solid var(--border);
 border-radius: var(--radius-md);
@@ -548,7 +529,7 @@ height: 68vh;
 <main class="main">
 <div class="topbar">
 <button class="mobile-toggle" id="mobileToggle" aria-label="Open menu">☰</button>
-<div>We’ve updated our <a href="#" target="_blank" rel="noopener noreferrer">Terms of Service</a>, <a href="#" target="_blank" rel="noopener noreferrer">Privacy Policy</a>, and <a href="#" target="_blank" rel="noopener noreferrer">Purchase Policy</a> effective February 10, 2026.</div>
+<div>We’ve updated our <a href="#">Terms of Service</a>, <a href="#">Privacy Policy</a>, and <a href="#">Purchase Policy</a> effective February 10, 2026.</div>
 </div>
 
 <div class="content">
@@ -609,14 +590,10 @@ src="about:blank"
 title="Embedded content"
 loading="lazy"
 referrerpolicy="no-referrer"
-sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"
+sandbox="allow-scripts allow-forms allow-same-origin"
 ></iframe>
 </div>
 </div>
-
-<button class="fallback-btn" id="fallbackBtn" type="button">
-Open verification in new tab
-</button>
 </div>
 </div>
 </section>
@@ -662,7 +639,6 @@ const mobileToggle = document.getElementById('mobileToggle');
 const sidebar = document.getElementById('sidebar');
 const sidebarBackdrop = document.getElementById('sidebarBackdrop');
 const steps = Array.from(document.querySelectorAll('.step'));
-const fallbackBtn = document.getElementById('fallbackBtn');
 
 function setActiveStep(stepNumber) {
 steps.forEach((step) => {
@@ -681,19 +657,11 @@ sidebarBackdrop.classList.add('show');
 }
 
 nextBtn.addEventListener('click', () => {
-// Switch to step 2 UI
 stepOneView.classList.remove('active');
 stepTwoView.classList.add('active');
 setActiveStep(2);
 stepTwoView.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-// Load the embedded verification page
 embedFrame.src = CONFIG.embedUrl;
-});
-
-// Fallback: open the verification page directly in a new tab
-fallbackBtn.addEventListener('click', () => {
-window.open(CONFIG.embedUrl, '_blank', 'noopener,noreferrer');
 });
 
 mobileToggle.addEventListener('click', () => {
